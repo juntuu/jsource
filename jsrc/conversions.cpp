@@ -446,14 +446,12 @@ jtccvt(J jt, I tflagged, array w, array *y) -> bool {
     }
     switch (CVCASE(CTTZ(t), CTTZ(wt))) {
         case CVCASE(INTX, B01X):  return convert<bool, int64_t>(jt, w, yv);
-        case CVCASE(XNUMX, B01X): return convert<bool, X>(jt, w, yv);
         case CVCASE(RATX, B01X):
             GATV(d, XNUM, n, r, s);
             return convert<bool, X>(jt, w, pointer_to_values<int64_t>(d)) && convert<X, Q>(jt, d, yv);
         case CVCASE(FLX, B01X): return convert<bool, double>(jt, w, yv);
         case CVCASE(CMPXX, B01X): return convert<bool, Z>(jt, w, yv);
         case CVCASE(B01X, INTX): return convert<I, bool>(jt, w, yv);
-        case CVCASE(XNUMX, INTX): return convert<I, X>(jt, w, yv);
         case CVCASE(RATX, INTX):
             GATV(d, XNUM, n, r, s);
             return convert<I, X>(jt, w, pointer_to_values<int64_t>(d)) && convert<X, Q>(jt, d, yv);
@@ -461,9 +459,6 @@ jtccvt(J jt, I tflagged, array w, array *y) -> bool {
         case CVCASE(CMPXX, INTX): return convert<int64_t, Z>(jt, w, yv);
         case CVCASE(B01X, FLX): return convert<D, bool>(jt, w, yv, ((I)jtinplace & JTNOFUZZ) != 0 ? 0.0 : FUZZ);
         case CVCASE(INTX, FLX): return convert<D, I>(jt, w, yv, ((I)jtinplace & JTNOFUZZ) != 0 ? 0.0 : FUZZ);
-        case CVCASE(XNUMX, FLX):
-            return convert<D, X>(
-              jt, w, yv, (jt->xmode & REPSGN(SGNIFNOT(tflagged, XCVTXNUMORIDEX))) | (tflagged >> XCVTXNUMCVX));
         case CVCASE(RATX, FLX):
             return convert<D, Q>(
               jt, w, yv, (jt->xmode & REPSGN(SGNIFNOT(tflagged, XCVTXNUMORIDEX))) | (tflagged >> XCVTXNUMCVX));
@@ -476,31 +471,18 @@ jtccvt(J jt, I tflagged, array w, array *y) -> bool {
             GATV(d, FL, n, r, s);
             return convert<Z, D>(jt, w, pointer_to_values<int64_t>(d), ((I)jtinplace & JTNOFUZZ) != 0 ? 0.0 : FUZZ) &&
                    convert<D, I>(jt, d, yv, ((I)jtinplace & JTNOFUZZ) != 0 ? 0.0 : FUZZ);
-        case CVCASE(XNUMX, CMPXX):
-            GATV(d, FL, n, r, s);
-            return convert<Z, D>(jt, w, pointer_to_values<int64_t>(d), ((I)jtinplace & JTNOFUZZ) != 0 ? 0.0 : FUZZ) &&
-                   convert<D, X>(
-                     jt, d, yv, (jt->xmode & REPSGN(SGNIFNOT(tflagged, XCVTXNUMORIDEX))) | (tflagged >> XCVTXNUMCVX));
         case CVCASE(RATX, CMPXX):
             GATV(d, FL, n, r, s);
             return convert<Z, D>(jt, w, pointer_to_values<int64_t>(d), ((I)jtinplace & JTNOFUZZ) != 0 ? 0.0 : FUZZ) &&
                    convert<D, Q>(
                      jt, d, yv, (jt->xmode & REPSGN(SGNIFNOT(tflagged, XCVTXNUMORIDEX))) | (tflagged >> XCVTXNUMCVX));
         case CVCASE(FLX, CMPXX): return convert<Z, D>(jt, w, yv, ((I)jtinplace & JTNOFUZZ) != 0 ? 0.0 : FUZZ);
-        case CVCASE(B01X, XNUMX): return convert<X, bool>(jt, w, yv);
-        case CVCASE(INTX, XNUMX): return convert<X, I>(jt, w, yv);
-        case CVCASE(RATX, XNUMX): return convert<X, Q>(jt, w, yv);
-        case CVCASE(FLX, XNUMX): return convert<X, D>(jt, w, yv);
-        case CVCASE(CMPXX, XNUMX):
-            GATV(d, FL, n, r, s);
-            return convert<X, D>(jt, w, pointer_to_values<int64_t>(d)) && convert<D, Z>(jt, d, yv);
         case CVCASE(B01X, RATX):
             GATV(d, XNUM, n, r, s);
             return convert<Q, X>(jt, w, pointer_to_values<int64_t>(d)) && convert<X, bool>(jt, d, yv);
         case CVCASE(INTX, RATX):
             GATV(d, XNUM, n, r, s);
             return convert<Q, X>(jt, w, pointer_to_values<int64_t>(d)) && convert<X, I>(jt, d, yv);
-        case CVCASE(XNUMX, RATX): return convert<Q, X>(jt, w, yv);
         case CVCASE(FLX, RATX): return convert<Q, D>(jt, w, yv);
         case CVCASE(CMPXX, RATX):
             GATV(d, FL, n, r, s);

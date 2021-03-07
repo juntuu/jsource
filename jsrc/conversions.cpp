@@ -206,12 +206,6 @@ jtxd1(J jt, D p, I mode) -> X {
 
 template <>
 [[nodiscard]] auto
-convert<D, X>(J jt, array w, void *yv, I mode) -> bool {
-    return convert<D, X>(jt, w, yv, [=](auto v) { return jtxd1(jt, v, mode); }) && !jt->jerr;
-}
-
-template <>
-[[nodiscard]] auto
 convert<X, bool>(J jt, array w, void *yv) -> bool {
     return convert<X, bool>(jt, w, yv, [](auto q) {
         auto const e = pointer_to_values<int64_t>(q)[0];
@@ -237,17 +231,6 @@ convert<X, I>(J jt, array w, void *yv) -> bool {
     return convert<X, I>(jt, w, yv, [&](auto c) -> std::optional<int64_t> {
         if (!(1 != jtxcompare(jt, q, c) && 1 != jtxcompare(jt, c, p))) return std::nullopt;
         return value_from_X<int64_t>(c);
-    });
-}
-
-template <>
-[[nodiscard]] auto
-convert<X, D>(J jt, array w, void *yv) -> bool {
-    return convert<X, D>(jt, w, yv, [](auto p) {
-        auto const c = pointer_to_values<int64_t>(p)[AN(p) - 1];
-        if (c == XPINF) { return inf; }
-        if (c == XNINF) { return infm; }
-        return value_from_X<double>(p);
     });
 }
 
